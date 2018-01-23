@@ -33,6 +33,7 @@
   "devDependencies": {
     "electron-packager": "^8.7.0",
     "electron-prebuilt": "^0.37.0",
+    "gulp-url-loader": "^0.1.0",
     "rimraf": "^2.5.2"
   },
   "dependencies": {
