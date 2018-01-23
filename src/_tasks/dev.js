@@ -15,6 +15,7 @@ const rename = require('gulp-rename');
 const parseSVG = require(path.join(__dirname, './common/parseSVG.js'));
 const babel = require('gulp-babel');  //es6
 const Common = require(path.join(__dirname, '../common.js'));
+const { urlLoader } = require('gulp-url-loader');
 
 function dev(projectPath, log, callback) {
 
@@ -146,9 +147,11 @@ function dev(projectPath, log, callback) {
     //编译 JS
     function compileJs(cb) {
         return gulp.src(paths.src.js)
-            .pipe(babel({
+            .pipe(urlLoader())
+            /*
+            pipe(babel({
                 presets: ["babel-preset-es2015", "babel-preset-stage-2"].map(require.resolve)
-            }))
+            }))*/
             .pipe(gulp.dest(paths.dev.js))
             .on('end', function () {
                 console.log('compileJs success.');
@@ -257,6 +260,7 @@ function dev(projectPath, log, callback) {
                     var tmp = file.replace(/src/, 'dev');
                     del([tmp], {force: true});
                 } else {
+                    compileJs(file);
                     copyHandler('js', file);
                 }
                 break;
@@ -385,6 +389,9 @@ function dev(projectPath, log, callback) {
                 },
                 function (cb) {
                     copyHandler('media', cb);
+                },
+                function (cb) {
+                    compileJs(cb);
                 },
                 function (cb) {
                     copyHandler('svg', cb);

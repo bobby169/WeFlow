@@ -44,6 +44,8 @@ const Common = require(path.join(__dirname, '../common'));
 let webp = require(path.join(__dirname, './common/webp'));
 let changed = require(path.join(__dirname, './common/changed'))();
 
+const { urlLoader } = require('gulp-url-loader');
+
 function dist(projectPath, log, callback) {
 
     let projectConfigPath = path.join(projectPath, 'weflow.config.json');
@@ -246,6 +248,7 @@ function dist(projectPath, log, callback) {
     function compileJs(cb) {
 
         return gulp.src(paths.src.js)
+            .pipe(urlLoader())
             .pipe(babel({
                 presets: ["babel-preset-es2015", "babel-preset-stage-2"].map(require.resolve)
             }))
